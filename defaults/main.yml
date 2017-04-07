@@ -1,0 +1,3 @@
+---
+dockerdisk: /dev/sdb
+dockerdir: /var/lib/docker

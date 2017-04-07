@@ -1,0 +1,16 @@
+---
+packages:
+    - docker-ce
+    - gcc
+    - make
+    - perl
+
+containers:
+    postgres:
+        name: postgres_94
+        uri: https://jkm@gitlab.com/jkm/docker.postgres.git
+        dest: /opt/pg
+    jsonapi:
+        name: jsonapi_prod
+        uri: https://jkm@gitlab.com/jkm/flask.jsonstore-api.git
+        dest: /opt/jsonstore

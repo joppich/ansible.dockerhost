@@ -1,0 +1,49 @@
+---
+
+- name: Partition 2nd drive
+  filesystem:
+      fstype: ext2
+      dev: '{{ dockerdisk }}'
+      opts: -L DOCKERDRV
+
+- name: Use 2nd drive as docker storageprovider
+  mount:
+      src: LABEL=DOCKERDRV
+      path: /var/lib/docker
+      fstype: ext2
+      state: mounted
+
+- name: Install required packages
+  package:
+      name: "{{ item }}"
+      state: latest
+  with_items: "{{ packages }}"
+
+- name: Create docker group
+  group:
+      name: docker
+      state: present
+
+- name: Create user for docker
+  user:
+      name: runner
+      group: docker
+      state: present
+
+- name: Start dockerd
+  service: 
+      enabled: yes
+      state: restarted
+
+- name: Fetch Container Sources
+  git:
+      repo: "{{ item.uri }}"
+      dest: "{{ item.dest }}"
+  with_items: "{{ containers }}"
+
+- name: Build images
+  docker_image:
+      name: "{{ item.name }}"
+      path: "{{ item.dest}}"/Dockerfile
+      state: build
+  with_items: "{{ containers }}"
