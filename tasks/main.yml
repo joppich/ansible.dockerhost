@@ -25,7 +25,7 @@
       state: mounted
 
 - name: add docker repokey
-  apt-key:
+  apt_key:
         url: "{{ docker_repo_key_src }}"
         state: present
 
