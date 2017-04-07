@@ -65,6 +65,6 @@
 - name: Build images
   docker_image:
       name: "{{ item.name }}"
-      path: "{{ item.dest}}"/Dockerfile
+      path: "{{ item.file}}"
       state: build
   with_items: "{{ containers }}"
