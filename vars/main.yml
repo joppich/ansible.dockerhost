@@ -1,16 +1,23 @@
 ---
 packages:
-    - docker-ce
+    - apt-transport-https
     - gcc
     - make
     - perl
+    - ca-certificates
+    - curl
+    - software-properties-common
+
+docker_repo_key_src:
+    https://download.docker.com/linux/debian/gpg
+
+docker_repo_uri:
+    deb [arch=amd64] https://download.docker.com/linux/debian jessie stable
 
 containers:
-    postgres:
-        name: postgres_94
-        uri: https://jkm@gitlab.com/jkm/docker.postgres.git
-        dest: /opt/pg
-    jsonapi:
-        name: jsonapi_prod
-        uri: https://jkm@gitlab.com/jkm/flask.jsonstore-api.git
-        dest: /opt/jsonstore
+    - name: postgres_94
+      uri: https://jkm@gitlab.com/jkm/docker.postgres.git
+      dest: /opt/pg
+    - name: jsonapi_prod
+      uri: https://jkm@gitlab.com/jkm/flask.jsonstore-api.git
+      dest: /opt/jsonstore
