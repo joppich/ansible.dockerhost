@@ -63,9 +63,9 @@
       dest: "{{ item.dest }}"
   with_items: "{{ containers }}"
 
-- name: Build images
-  docker_image:
-      name: "{{ item.name }}"
-      path: "{{ item.file}}"
-      state: build
+- name: build containers
+  command: cd "{{ item.dest }}" && docker build -t "{{ name }}"
+  become: yes
+  become_user: runner
   with_items: "{{ containers }}"
+
