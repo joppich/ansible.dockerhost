@@ -52,7 +52,8 @@
       state: present
 
 - name: Start dockerd
-  service: 
+  service:
+      name: docker
       enabled: yes
       state: restarted
 
