@@ -63,11 +63,14 @@
       dest: "{{ item.dest }}"
   with_items: "{{ containers }}"
 
+- name: generate buildscripts
+  template:
+      src: buildscript.sh.jinja2
+      dest: /root/buildscript.sh
+      mode: 0600
+
 - name: build containers
-  command: cd "{{ item.dest }}" && docker build -t "{{ item.name }}"
-  become: yes
-  become_user: runner
-  with_items: "{{ containers }}"
+  command: sh /root/buildscript.sh
 
 - name: run database container
   command: docker run --rm -t -i -P -d --name postgres_94 postgres_94

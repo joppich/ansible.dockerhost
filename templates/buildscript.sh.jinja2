@@ -1,0 +1,7 @@
+#!/bin/sh
+
+{% for entry in containers %}
+    cd {{ entry.dest }}
+    docker build -t {{ entry.name }}
+{% endfor %}
+exit 0
