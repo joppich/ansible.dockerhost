@@ -11,6 +11,15 @@
       state: latest
   with_items: "{{ packages }}"
 
+- name: Install not horribly out-of-date pip
+  easy_install: 
+      name: pip
+      state: latest
+
+- name: Install docker-py from pip
+  pip:
+      name: docker-py
+
 - name: Partition 2nd drive
   filesystem:
       fstype: ext2
@@ -73,12 +82,23 @@
   command: sh /root/buildscript.sh
 
 - name: run database container
-  command: docker run --rm -t -i -P -d --name postgres_94 postgres_94
+  docker_container:
+      name: postgres_94
+      image: postgres_94
+      state: started
+      restart: yes
   become: yes
   become_user: runner
 
 - name: run application container
-  command: docker run --rm -t -i -p 8080:5000 --name flask_jsonstore --link postgres_94:pg flask_jsonstore
+  #  command: docker run --rm -i -t -p 8080:5000 --name flask_jsonstore --link postgres_94:pg jsonapi_prod
+  docker_container:
+      name: flask_jsonstore
+      image: jsonapi_prod
+      state: started
+      restart: yes
+      links: "postgres_94:pg"
+      ports: 8080:5000
   become: yes
   become_user: runner
 
