@@ -14,11 +14,3 @@ docker_repo_key_src:
 
 docker_repo_uri:
     deb [arch=amd64] https://download.docker.com/linux/debian jessie stable
-
-containers:
-    - name: postgres_94
-      uri: https://jkm@gitlab.com/jkm/docker.postgres.git
-      dest: /opt/pg
-    - name: jsonapi_prod
-      uri: https://jkm@gitlab.com/jkm/flask.jsonstore-api.git
-      dest: /opt/jsonstore
