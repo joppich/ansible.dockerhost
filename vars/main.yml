@@ -9,6 +9,10 @@ packages:
     - software-properties-common
     - python-setuptools
 
+pyhton-packages:
+    - docker-py
+    - ansible-container
+
 docker_repo_key_src:
     https://download.docker.com/linux/debian/gpg
 

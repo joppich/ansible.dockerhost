@@ -16,9 +16,10 @@
       name: pip
       state: latest
 
-- name: Install docker-py from pip
+- name: Install required software from pip
   pip:
-      name: docker-py
+      name: "{{ item }}"
+  with_items: "{{ python-packages }}"
 
 - name: Partition 2nd drive
   filesystem:
