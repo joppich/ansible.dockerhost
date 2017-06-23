@@ -2,89 +2,87 @@
 
 - name: update package sources and upgrade system
   apt:
-      update_cache: yes
-      upgrade: yes
-  environment: DEBIAN_FRONTEND: noninteractive
+    update_cache: yes
+    upgrade: yes
+  environment:
+    debian_frontend: noninteractive
 
 - name: Install required packages
   apt:
-      name: "{{ item }}"
-      state: latest
+    name: "{{ item }}"
+    state: latest
   with_items: "{{ packages }}"
-  environment: DEBIAN_FRONTEND: noninteractive
+  environment: 
+    debian_frontend: noninteractive
 
 - name: Install not horribly out-of-date pip
   easy_install: 
-      name: pip
-      state: latest
+    name: pip
+    state: latest
 
 - name: Install required software from pip
   pip:
-      name: "{{ item }}"
+    name: "{{ item }}"
   with_items: "{{ python-packages }}"
 
 - name: Partition 2nd drive
   filesystem:
-      fstype: ext2
-      dev: '{{ dockerdisk }}'
-      opts: -L DOCKERDRV
+    fstype: ext2
+    dev: '{{ dockerdisk }}'
+    opts: -L DOCKERDRV
   when: extra_docker_drive == True
 
 - name: Use 2nd drive as docker storageprovider
   mount:
-      src: LABEL=DOCKERDRV
-      name: /var/lib/docker
-      fstype: ext2
-      state: mounted
+    src: LABEL=DOCKERDRV
+    name: /var/lib/docker
+    fstype: ext2
+    state: mounted
   when: extra_docker_drive == True
 
 - name: add docker repokey
   apt_key:
-        url: "{{ docker_ubuntu_repo_key_src }}"
-        state: present
-  when:
-      ansible_distribution == 'Ubuntu'
+    url: "{{ docker_ubuntu_repo_key_src }}"
+    state: present
+  when: ansible_distribution == 'Ubuntu'
 
 - name: add docker repo to packages sources
   apt_repository:
-        repo: "{{ docker_ubuntu_repo_uri }}"
-  when:
-      ansible_distribution == 'Ubuntu'
-        state: present
+    repo: "{{ docker_ubuntu_repo_uri }}"
+    state: present
+  when: ansible_distribution == 'Ubuntu'
 
 - name: add docker repokey
   apt_key:
-        url: "{{ docker_debian_repo_key_src }}"
-        state: present
-  when:
-      ansible_distribution == 'Debian'
+    url: "{{ docker_debian_repo_key_src }}"
+    state: present
+  when: ansible_distribution == 'Debian'
 
 - name: add docker repo to packages sources
   apt_repository:
-        repo: "{{ docker_debian_repo_uri }}"
-  when:
-      ansible_distribution == 'Debian'
-        state: present
+    repo: "{{ docker_debian_repo_uri }}"
+    state: present
+  when: ansible_distribution == 'Debian'
 
 - name: install docker
   apt:
-      update_cache: yes
-      name: docker-ce
-      state: latest
+    update_cache: yes
+    name: docker-ce
+    state: latest
 
 - name: Create docker group
   group:
-      name: docker
-      state: present
+    name: docker
+    state: present
 
 - name: Create user for docker
   user:
-      name: runner
-      group: docker
-      state: present
+    name: runner
+    group: docker
+    state: present
 
 - name: Start dockerd
   service:
-      name: docker
-      enabled: yes
-      state: restarted
+    name: docker
+    enabled: yes
+    state: restarted

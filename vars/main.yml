@@ -9,7 +9,7 @@ packages:
     - software-properties-common
     - python-setuptools
 
-pyhton-packages:
+python-packages:
     - docker-py
     - ansible-container
 
