@@ -40,12 +40,30 @@
 
 - name: add docker repokey
   apt_key:
-        url: "{{ docker_repo_key_src }}"
+        url: "{{ docker_ubuntu_repo_key_src }}"
         state: present
+  when:
+      ansible_distribution == 'Ubuntu'
 
 - name: add docker repo to packages sources
   apt_repository:
-        repo: "{{ docker_repo_uri }}"
+        repo: "{{ docker_ubuntu_repo_uri }}"
+  when:
+      ansible_distribution == 'Ubuntu'
+        state: present
+
+- name: add docker repokey
+  apt_key:
+        url: "{{ docker_debian_repo_key_src }}"
+        state: present
+  when:
+      ansible_distribution == 'Debian'
+
+- name: add docker repo to packages sources
+  apt_repository:
+        repo: "{{ docker_debian_repo_uri }}"
+  when:
+      ansible_distribution == 'Debian'
         state: present
 
 - name: install docker

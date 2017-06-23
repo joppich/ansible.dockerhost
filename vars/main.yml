@@ -13,8 +13,14 @@ pyhton-packages:
     - docker-py
     - ansible-container
 
-docker_repo_key_src:
+docker_debian_repo_key_src:
     https://download.docker.com/linux/debian/gpg
 
-docker_repo_uri:
+docker_debian_repo_uri:
     deb [arch=amd64] https://download.docker.com/linux/debian jessie stable
+
+docker_ubuntu_repo_key_src:
+    https://download.docker.com/linux/ubuntu/gpg
+
+docker_ubuntu_repo_uri:
+    deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
