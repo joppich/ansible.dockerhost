@@ -4,12 +4,14 @@
   apt:
       update_cache: yes
       upgrade: yes
+  environment: DEBIAN_FRONTEND: noninteractive
 
 - name: Install required packages
-  package:
+  apt:
       name: "{{ item }}"
       state: latest
   with_items: "{{ packages }}"
+  environment: DEBIAN_FRONTEND: noninteractive
 
 - name: Install not horribly out-of-date pip
   easy_install: 
@@ -26,6 +28,7 @@
       fstype: ext2
       dev: '{{ dockerdisk }}'
       opts: -L DOCKERDRV
+  when: extra_docker_drive == True
 
 - name: Use 2nd drive as docker storageprovider
   mount:
@@ -33,6 +36,7 @@
       name: /var/lib/docker
       fstype: ext2
       state: mounted
+  when: extra_docker_drive == True
 
 - name: add docker repokey
   apt_key:

@@ -1,3 +1,4 @@
 ---
+extra_docker_drive: False
 dockerdisk: /dev/sdb
 dockerdir: /var/lib/docker
