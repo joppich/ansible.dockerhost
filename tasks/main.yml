@@ -23,7 +23,7 @@
 - name: Install required software from pip
   pip:
     name: "{{ item }}"
-  with_items: "{{ python-packages }}"
+  with_items: "{{ python_packages }}"
 
 - name: Partition 2nd drive
   filesystem:
